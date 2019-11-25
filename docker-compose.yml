@@ -1,0 +1,19 @@
+version: '3'
+services:
+    recipes-backend:
+        build: .
+        ports:
+            - 8000:8000
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/app
+        working_dir: /app
+        depends_on:
+            - recipes-database
+        env_file:
+            - .env
+
+    recipes-database:
+        image: postgres:11.5
+        env_file:
+            - .env
