@@ -1,0 +1,39 @@
+body {
+    background-color: #ffffcc;
+}
+
+.logo-title {
+    font-family: 'Kaushan Script', cursive;
+}
+
+.navbar {
+    background-color: #ff7f50;
+}
+
+.image-card {
+    height: 250px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.card-top-image {
+    background-image: url(https://e3.edimdoma.ru/data/recipes/0013/2537/132537-ed4_wide.jpg?1574855869);
+    height: 200px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+a,
+a:hover,
+a:active {
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #ff7f50;
+}

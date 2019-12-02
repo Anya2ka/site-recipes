@@ -1,0 +1,86 @@
+{% extends "recipes_app/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <form class="p-4 bg-white rounded shadow-lg">
+        <div class="form-row">
+            <div class="form-group col-md-8">
+                <label for="id_dishname">Название блюда</label>
+                <input type="text" class="form-control" id="id_dishname" placeholder="Введите название">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="id_category">Категория</label>
+                <select id="id_category" class="custom-select multiple size="3"">
+                    <option selected>Выберите категорию</option>
+                    <option value="1">Закуски</option>
+                    <option value="2">Десерты</option>
+                    <option value="3">Напитки</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_description">Описание</label>
+            <textarea class="form-control" id="id_description" rows="5" placeholder="Добавте описание блюда"></textarea>
+        </div>
+        <hr>
+        <button class="btn btn-sm btn-success ingredients-create">Добавить ингредиент</button>
+        <hr>
+        <div class="ingredients-list">
+            <div class="form-row">
+                <div class="form-group col-md-7">
+                    <label for="id_ingredientname">Ингридиенты</label>
+                    <input type="text" class="form-control" id="id_ingredientname" name="form-0-name" placeholder="Введите ингридиент">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="id_ingredientcount">Количество</label>
+                    <input type="text" class="form-control" id="id_ingredientcount" name="form-0-count" placeholder="Введите количество">
+                </div>
+                <div class="form-group col-md-1 d-flex flex-column justify-content-center text-center">
+                    <label>&nbsp;</label>
+                    <div>
+                        <a href="#!" class="text-danger"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="form-group">
+            <label for="id_cooking">Способ приготовления</label>
+            <textarea class="form-control" id="id_cooking" rows="5" placeholder="Добавте способ приготовления"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="id_dishnumber">Количество порций</label>
+                <input type="number" class="form-control" id="id_dishnumber" min="1" max="20">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="id_timeDish">Время приготовления</label>
+                <select id="id_timeDish" class="form-control">
+                    <option selected>1 час</option>
+                    <option value="1">1,5 часа</option>
+                    <option value="2">два часа</option>
+                    <option value="3">три часа</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Выберите изображение</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="id_chooseFile">
+                    <label class="custom-file-label" for="id_chooseFile">.png, .jpeg, gif...</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success btn-block">Создать рецепт</button></div>
+            <div class="col-md-6">
+                <button type="reset" class="btn btn-danger btn-block">Отменить</button></div>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block extra_body %}
+    <script src="{% static "js/dish_create.js" %}"></script>
+{% endblock extra_body %}

@@ -1,0 +1,38 @@
+{% extends "recipes_app/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-4 col-md-6">
+            <form class="p-4 bg-white rounded shadow-lg">
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" class="form-control" id="id_username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="id_email">E-mail</label>
+                    <input type="email" class="form-control" id="id_email" aria-describedby="emailHelp" placeholder="email@example.com">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="id_password">Пароль</label>
+                    <input type="password" class="form-control" id="id_password" placeholder="Password" aria-describedby="passwordHelpBlock">
+                    <small id="id_passwordHelp" class="form-text text-muted">
+                        Your password must be 8-20 characters long, contain letters or numbers, and must not contain spaces, special characters, or emoji.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="id_confirmPassword">Подтвердить пароль</label>
+                    <input type="password" class="form-control" id="id_confirmPassword" placeholder="Подтвердить пароль">
+                </div>
+                <button type="submit" class="btn btn-success btn-md btn-block">Зарегистрироваться</button>
+                <div class="text-center mt-2">
+                    Уже есть аккаунт? <a class="text-info openSigninModel" href="#!">Войти</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

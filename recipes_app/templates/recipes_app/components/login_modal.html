@@ -1,0 +1,37 @@
+<!-- Modal -->
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="p-2">
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        <input type="text" class="form-control" id="id_username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password">Пароль</label>
+                        <input type="password" class="form-control" id="id_password" placeholder="Password" aria-describedby="passwordHelpBlock">
+                    </div>
+                    <button type="submit" class="btn btn-success btn-md btn-block mt-4">Войти</button>
+                    <div class="div form-row d-flex justify-content-center mt-3">
+                        <div class="form-group col-md-6">
+                            <div class="text-center">
+                                <a class="text-info" href="#">Забыли пароль?</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">Еще нет аккаунта?
+                    <a class="text-info" href="{% url 'registration' %}">Зарегистрироваться!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
