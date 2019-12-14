@@ -27,31 +27,21 @@
         <div class="card-body">
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
-                    <h5>Title</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id eligendi mollitia minima, autem consectetur illo corporis tempore rem, quibusdam sunt ipsa. Alias temporibus sit, nisi nulla ipsam iure repudiandae. Explicabo!</p>
+                    <h5>{{ object.name }}</h5>
+                    <p>{{ object.description }}</p>
                 </div>
                 <div class="tab-pane fade" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
                     <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                            Cras justo odio
-                            <span class="text-dark badge badge-pill bg-warning">14 kg</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                            Dapibus ac facilisis in
-                            <span class="text-dark badge badge-pill bg-warning">2 sp.</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                            Morbi leo risus
-                            <span class="badge text-dark badge-pill bg-warning">500 g</span>
-                        </li>
+                        {% for ingredient in object.ingredients %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                                {{ ingredient.name }}
+                                <span class="text-dark badge badge-pill bg-warning">{{ ingredient.qty }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="pills-cooking" role="tabpanel" aria-labelledby="pills-cooking-tab">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor architecto, est necessitatibus molestiae ratione harum maxime consequuntur ipsum, nam totam itaque perferendis quia. Voluptatum numquam quod non, commodi hic laudantium.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor architecto, est necessitatibus molestiae ratione harum maxime consequuntur ipsum, nam totam itaque perferendis quia. Voluptatum numquam quod non, commodi hic laudantium.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor architecto, est necessitatibus molestiae ratione harum maxime consequuntur ipsum, nam totam itaque perferendis quia. Voluptatum numquam quod non, commodi hic laudantium.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor architecto, est necessitatibus molestiae ratione harum maxime consequuntur ipsum, nam totam itaque perferendis quia. Voluptatum numquam quod non, commodi hic laudantium.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor architecto, est necessitatibus molestiae ratione harum maxime consequuntur ipsum, nam totam itaque perferendis quia. Voluptatum numquam quod non, commodi hic laudantium.</p>
+                    <p>{{ object.cooking_method }}</p>
                 </div>
             </div>
         </div>

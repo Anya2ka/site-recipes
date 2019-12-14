@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+    $('select[name="categories"]').select2();
+
     function trashIconOnClick(event) {
         event.preventDefault();
 

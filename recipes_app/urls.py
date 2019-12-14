@@ -9,12 +9,12 @@ urlpatterns = [
         name='home'
     ),
     path(
-        '<int:pk>/',
+        'categories/<int:pk>/',
         views.CategoryDetailsPageView.as_view(),
         name='category-details'
     ),
     path(
-        '<int:category_pk>/dishes/<int:dish_pk>/',
+        'dishes/<int:dish_pk>/',
         views.DishDetailsPageView.as_view(),
         name='dish-details'
     ),

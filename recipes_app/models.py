@@ -21,8 +21,8 @@ class Dish(models.Model):
 
     image = models.ImageField(blank=True, null=True)
     name = models.CharField('Dish name', max_length=50)
-    ingredients = ArrayField(JSONField())
-    cooking_time = models.TimeField(blank=True, null=True)
+    ingredients = ArrayField(JSONField(), blank=True, default=list)
+    cooking_time = models.DurationField(blank=True, null=True)
     servings_number = models.PositiveSmallIntegerField(blank=True, default=1)
     cooking_method = models.TextField()
     description = models.TextField(blank=True, null=True)

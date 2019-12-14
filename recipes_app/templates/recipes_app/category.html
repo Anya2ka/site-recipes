@@ -3,22 +3,25 @@
 {% block content %}
 <div class="container mt-3">
     <div class="row">
+        {% for dish in object_list  %}
+
         <div class="col-md-4 mb-4">
-            <a href="{% url 'dish-details' category_pk=1 dish_pk=1 %}">
+            <a href="{% url 'dish-details' dish_pk=dish.pk %}">
                 <div class="card">
-                    <img src="https://via.placeholder.com/150x100" class="card-img-top" alt="...">
-                    <div class="card-header">
-                        Название блюда
+                    {% if dish.image %}
+                    <img src="{{ dish.image.url }}" class="card-img-top" alt="...">
+                    {% endif %}
+                    <div class="card-header">{{dish.name}}
                     </div>
                     <div class="card-body">
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis facere, voluptas. Asperiores odio similique, nulla obcaecati ducimus sed nesciunt cumque, blanditiis reiciendis tempore temporibus tenetur cum quas vitae, nobis alias.</p>
+                        <p class="card-text">{{dish.description}}</p>
                     </div>
-                    <div class="card-footer text-muted">
-                        Author
+                    <div class="card-footer text-muted">{{dish.author.username}}
                     </div>
                 </div>
             </a>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}
