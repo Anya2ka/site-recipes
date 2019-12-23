@@ -76,3 +76,23 @@ class NewDishForm(forms.Form):
         label='Минуты',
         required=False
     )
+
+
+class IngredientsForm(forms.Form):
+    name = forms.CharField(
+        label='Ингридиенты',
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )
+    qty = forms.CharField(
+        label='Количество',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )

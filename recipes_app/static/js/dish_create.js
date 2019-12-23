@@ -1,5 +1,30 @@
 jQuery(document).ready(function($) {
     $('select[name="categories"]').select2();
+    new SimpleMDE({ element: $('#id_cooking_method')[0], forceSync: true });
+    new SimpleMDE({ element: $('#id_description')[0], forceSync: true });
+
+    $('.ingredients-list input[data-type="TOTAL_FORMS"]').val(
+        $('.ingredients-list .form-row').length,
+    );
+
+    $('.ingredients-list input[data-type="INITIAL_FORMS"]').val(
+        $('.ingredients-list .form-row').length,
+    );
+
+    validateIngredients();
+
+    function validateIngredients() {
+        var isValid =
+            $('.ingredients-list input[type="text"][name*="name"]')
+                .removeClass('is-invalid')
+                .filter(function() {
+                    return !this.value;
+                })
+                .addClass('is-invalid').length === 0;
+
+        $('.ingredients-create').attr('disabled', !isValid);
+        $('form button[type="submit"]').attr('disabled', !isValid);
+    }
 
     function trashIconOnClick(event) {
         event.preventDefault();
@@ -23,13 +48,24 @@ jQuery(document).ready(function($) {
                     currentName[1] = rowIndex;
 
                     $(inputElement).attr('name', currentName.join('-'));
+                    $(inputElement).attr('id', 'id_' + currentName.join('-'));
                 });
         });
+
+        var $totalForms = $('.ingredients-list input[data-type="TOTAL_FORMS"]');
+        $totalForms.val(parseInt($totalForms.val()) - 1);
+
+        validateIngredients();
     }
 
     if ($('.ingredients-list .form-row').length === 1) {
         $('.ingredients-list .form-row .fa-trash').hide();
     }
+
+    $('.ingredients-list input[type="text"]').on('change', function(event) {
+        event.preventDefault();
+        validateIngredients();
+    });
 
     $('.ingredients-create').on('click', function(event) {
         event.preventDefault();
@@ -37,25 +73,38 @@ jQuery(document).ready(function($) {
         var $cloned = $(this)
             .siblings('.ingredients-list')
             .find('.form-row:last')
-            .clone();
+            .clone()
+            .find('input')
+            .each(function(index, el) {
+                $(el).val('');
 
-        $cloned.find('input').each(function(index, el) {
-            var currentName = $(el)
-                .attr('name')
-                .split('-');
+                var currentName = $(el)
+                    .attr('name')
+                    .split('-');
 
-            currentName[1] = parseInt(currentName[1]) + 1;
+                currentName[1] = parseInt(currentName[1]) + 1;
 
-            $(el).attr('name', currentName.join('-'));
-        });
-
-        $cloned.appendTo($(this).siblings('.ingredients-list'));
+                $(el).attr('name', currentName.join('-'));
+                $(el).attr('id', 'id_' + currentName.join('-'));
+            })
+            .end()
+            .appendTo($(this).siblings('.ingredients-list'))
+            .find('.fa-trash')
+            .on('click', trashIconOnClick);
 
         if ($('.ingredients-list .form-row').length > 1) {
             $('.ingredients-list .form-row .fa-trash').show();
         }
 
-        $cloned.find('.fa-trash').on('click', trashIconOnClick);
+        var $totalForms = $('.ingredients-list input[data-type="TOTAL_FORMS"]');
+        $totalForms.val(parseInt($totalForms.val()) + 1);
+
+        validateIngredients();
+
+        $('.ingredients-list input[type="text"]').on('change', function(event) {
+            event.preventDefault();
+            validateIngredients();
+        });
     });
 
     $('.fa-trash')

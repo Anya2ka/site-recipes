@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
+from markdown import markdown
 
 
 class Category(models.Model):
@@ -37,3 +38,12 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.cooking_method:
+            self.cooking_method = markdown(self.cooking_method)
+
+        if self.description:
+            self.description = markdown(self.description)
+
+        return super(Dish, self).save(*args, **kwargs)

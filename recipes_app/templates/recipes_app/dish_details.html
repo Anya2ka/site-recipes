@@ -4,7 +4,7 @@
 
 <div class="container mt-4">
     <div class="card">
-        <div class="card-top-image"></div>
+        <div class="card-top-image" {% if object.image %}style="background-image: url({{ object.image.url }});"{% endif %}></div>
         <div class="card-header">
             <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
@@ -28,7 +28,7 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
                     <h5>{{ object.name }}</h5>
-                    <p>{{ object.description }}</p>
+                    <p>{{ object.description|safe }}</p>
                 </div>
                 <div class="tab-pane fade" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
                     <ul class="list-group">
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="pills-cooking" role="tabpanel" aria-labelledby="pills-cooking-tab">
-                    <p>{{ object.cooking_method }}</p>
+                    <p>{{ object.cooking_method|safe }}</p>
                 </div>
             </div>
         </div>
