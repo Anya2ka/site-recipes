@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+function initializeForm () {
     $('select[name="categories"]').select2();
     new SimpleMDE({ element: $('#id_cooking_method')[0], forceSync: true });
     new SimpleMDE({ element: $('#id_description')[0], forceSync: true });
@@ -110,4 +110,4 @@ jQuery(document).ready(function($) {
     $('.fa-trash')
         .parent()
         .on('click', trashIconOnClick);
-});
+}

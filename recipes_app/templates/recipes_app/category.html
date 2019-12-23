@@ -6,7 +6,7 @@
         {% for dish in object_list  %}
 
         <div class="col-md-4 mb-4">
-            <a href="{% url 'dish-details' dish_pk=dish.pk %}">
+            <a href="{% url 'dish-details' pk=dish.pk %}">
                 <div class="card">
                     {% if dish.image %}
                     <img src="{{ dish.image.url }}" class="card-img-top" alt="...">

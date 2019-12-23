@@ -2,12 +2,12 @@ from datetime import timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
+from django.forms.models import model_to_dict
 from django.shortcuts import get_object_or_404, reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, FormView, ListView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import FormView
 
-from .forms import IngredientsForm, NewDishForm
+from .forms import DishForm, IngredientsForm
 from .models import Category, Dish
 
 
@@ -27,10 +27,61 @@ class CategoryDetailsPageView(ListView):
         return Dish.objects.filter(categories=self.kwargs['pk'])
 
 
-class DishDetailsPageView(DetailView):
+class DishDetailsPageView(DetailView, FormView):
     model = Dish
     template_name = "recipes_app/dish_details.html"
-    pk_url_kwarg = 'dish_pk'
+    form_class = DishForm
+
+    def get_success_url(self):
+        return reverse('dish-details', kwargs=self.kwargs)
+
+    def get_initial(self):
+        obj = self.get_object()
+
+        hours = obj.cooking_time.seconds // 3600
+        minutes = (obj.cooking_time.seconds // 60) % 60
+
+        return {
+            'cooking_time_hours': hours,
+            'cooking_time_minutes': minutes,
+            **model_to_dict(obj),
+        }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        ingredients = self.get_object().ingredients
+
+        context['ingredients_forms'] = (
+            formset_factory(
+                IngredientsForm,
+                extra=0 if ingredients else 1
+            )(
+                initial=ingredients
+            )
+        )
+
+        return context
+
+    def form_valid(self, form):
+        ingredients_form = formset_factory(IngredientsForm)(self.request.POST)
+
+        categories = form.cleaned_data.pop('categories')
+        ct_hours = form.cleaned_data.pop('cooking_time_hours')
+        ct_minutes = form.cleaned_data.pop('cooking_time_minutes')
+
+        obj = self.get_object()
+
+        for key, value in form.cleaned_data.items():
+            setattr(obj, key, value)
+
+        obj.categories.set(categories)
+        obj.ingredients = ingredients_form.cleaned_data
+        obj.cooking_time = timedelta(hours=ct_hours, minutes=ct_minutes)
+
+        obj.save()
+
+        return super().form_valid(form)
 
 
 class RegistrationPageView(TemplateView):
@@ -39,11 +90,11 @@ class RegistrationPageView(TemplateView):
 
 class DishCreatePageView(LoginRequiredMixin, FormView):
     template_name = "recipes_app/dish_create.html"
-    form_class = NewDishForm
+    form_class = DishForm
 
     def get_success_url(self):
         return reverse('dish-details', kwargs={
-            'dish_pk': self.dish.pk
+            'pk': self.dish.pk
         })
 
     def get_context_data(self, **kwargs):

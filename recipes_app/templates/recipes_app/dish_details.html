@@ -1,10 +1,13 @@
 {% extends "recipes_app/base.html" %}
 {% load static %}
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock extra_head %}
 {% block content %}
-
 <div class="container mt-4">
     <div class="card">
-        <div class="card-top-image" {% if object.image %}style="background-image: url({{ object.image.url }});"{% endif %}></div>
+        <div class="card-top-image" {% if object.image %}style="background-image: url({{ object.image.url }});" {% endif %}></div>
         <div class="card-header">
             <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
@@ -28,20 +31,112 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
                     <h5>{{ object.name }}</h5>
-                    <p>{{ object.description|safe }}</p>
+                    <hr>
+                    {{ object.description|safe }}
                 </div>
                 <div class="tab-pane fade" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
                     <ul class="list-group">
                         {% for ingredient in object.ingredients %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center border-0">
-                                {{ ingredient.name }}
-                                <span class="text-dark badge badge-pill bg-warning">{{ ingredient.qty }}</span>
-                            </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0">
+                            {{ ingredient.name }}
+                            <span class="text-dark badge badge-pill bg-warning">{{ ingredient.qty }}</span>
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="pills-cooking" role="tabpanel" aria-labelledby="pills-cooking-tab">
-                    <p>{{ object.cooking_method|safe }}</p>
+                    {{ object.cooking_method|safe }}
+                </div>
+                <div class="tab-pane fade" id="pills-update" role="tabpanel" aria-labelledby="pills-update-tab">
+                    <form method="post" action="{% url 'dish-details' pk=object.pk %}" class="p-4 bg-white rounded shadow-lg" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                {{ form.name.errors }}
+                                {{ form.name.label_tag }}
+                                {{ form.name }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                {{ form.categories.errors }}
+                                {{ form.categories.label_tag }}
+                                {{ form.categories }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form.description.errors }}
+                            {{ form.description.label_tag }}
+                            {{ form.description }}
+                        </div>
+                        <hr>
+                        <button class="btn btn-sm btn-success ingredients-create">Добавить ингредиент</button>
+                        <hr>
+                        <div class="ingredients-list">
+                            <input type="hidden" data-type="TOTAL_FORMS" name="{{ ingredients_forms.prefix }}-TOTAL_FORMS">
+                            <input type="hidden" data-type="INITIAL_FORMS" name="{{ ingredients_forms.prefix }}-INITIAL_FORMS">
+                            {% for ingredients_form in ingredients_forms %}
+                            <div class="form-row">
+                                <div class="form-group col-md-7">
+                                    {{ ingredients_form.name.label_tag }}
+                                    {{ ingredients_form.name }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    {{ ingredients_form.qty.label_tag }}
+                                    {{ ingredients_form.qty }}
+                                </div>
+                                <div class="form-group col-md-1 d-flex flex-column justify-content-center text-center">
+                                    <label>&nbsp;</label>
+                                    <div>
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            {{ form.cooking_method.errors }}
+                            {{ form.cooking_method.label_tag }}
+                            {{ form.cooking_method }}
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                {{ form.servings_number.errors }}
+                                {{ form.servings_number.label_tag }}
+                                {{ form.servings_number }}
+                            </div>
+                            <div class="form-group col-md-1">
+                                {{ form.cooking_time_hours.errors }}
+                                {{ form.cooking_time_hours.label_tag }}
+                                {{ form.cooking_time_hours }}
+                            </div>
+                            <div class="form-group col-md-1">
+                                {{ form.cooking_time_minutes.errors }}
+                                {{ form.cooking_time_minutes.label_tag }}
+                                {{ form.cooking_time_minutes }}
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Выберите изображение:</label>
+                                <div class="custom-file">
+                                    {{ form.image.errors }}
+                                    <input type="file" accept="image/*" name="{{ form.image.name }}" class="custom-file-input" id="{{ form.image.id_for_label }}">
+                                    <label style="overflow: hidden;" class="custom-file-label" for="{{ form.image.id_for_label }}">
+                                        {% if object.image %}
+                                        {{ object.image.name }}
+                                        {% else %}
+                                        {{ form.image.label }}
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-success btn-block">Изменить рецепт</button></div>
+                            <div class="col-md-6">
+                                <button type="reset" class="btn btn-danger btn-block">Отменить</button></div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -49,5 +144,24 @@
 </div>
 {% endblock content %}
 {% block extra_body %}
-    <script src="{% static "js/dish_details.js" %}"></script>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script src="{% static 'js/dish_details.js' %}"></script>
+<script src="{% static 'js/dish_create.js' %}"></script>
+<script>
+
+$('.card-header-pills').on('shown.bs.tab', function (e) {
+  if ($(e.target).attr('aria-controls') === 'pills-update') {
+    initializeForm();
+  }
+});
+
+</script>
+<script>
+document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+    var fileName = document.getElementById("{{ form.image.id_for_label }}").files[0].name;
+    var nextSibling = e.target.nextElementSibling
+    nextSibling.innerText = fileName
+});
+</script>
 {% endblock extra_body %}

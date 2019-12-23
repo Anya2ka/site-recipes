@@ -14,7 +14,7 @@ urlpatterns = [
         name='category-details'
     ),
     path(
-        'dishes/<int:dish_pk>/',
+        'dishes/<int:pk>/',
         views.DishDetailsPageView.as_view(),
         name='dish-details'
     ),

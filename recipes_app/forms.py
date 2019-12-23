@@ -3,7 +3,7 @@ from django import forms
 from .models import Category
 
 
-class NewDishForm(forms.Form):
+class DishForm(forms.Form):
     name = forms.CharField(
         label='Название блюда', max_length=50,
         widget=forms.TextInput(

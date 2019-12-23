@@ -96,6 +96,11 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
 <script src="{% static 'js/dish_create.js' %}"></script>
 <script>
+    jQuery(document).ready(function($) {
+        initializeForm();
+    });
+</script>
+<script>
 document.querySelector('.custom-file-input').addEventListener('change', function(e) {
     var fileName = document.getElementById("{{ form.image.id_for_label }}").files[0].name;
     var nextSibling = e.target.nextElementSibling
