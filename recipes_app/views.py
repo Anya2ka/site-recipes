@@ -1,13 +1,15 @@
 from datetime import timedelta
 
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
 from django.forms.models import model_to_dict
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, reverse
+from django.views import View
 from django.views.generic import DetailView, FormView, ListView
-from django.views.generic.base import TemplateView
 
-from .forms import DishForm, IngredientsForm
+from .forms import DishForm, IngredientsForm, SignUpForm
 from .models import Category, Dish
 
 
@@ -83,9 +85,30 @@ class DishDetailsPageView(DetailView, FormView):
 
         return super().form_valid(form)
 
+    def delete(self, *args, **kwargs):
+        obj = self.get_object()
+        obj.delete()
 
-class RegistrationPageView(TemplateView):
+        return JsonResponse({
+            'ok': True,
+            'message': 'Dish with ID \'{id}\' successfully deleted'.format(
+                id=kwargs['pk']
+            )
+        })
+
+
+class RegistrationPageView(FormView):
+    form_class = SignUpForm
     template_name = "recipes_app/registration.html"
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.save()
+        username = form.cleaned_data.get('username')
+        raw_password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=raw_password)
+        login(self.request, user)
+        return super().form_valid(form)
 
 
 class DishCreatePageView(LoginRequiredMixin, FormView):
@@ -122,3 +145,17 @@ class DishCreatePageView(LoginRequiredMixin, FormView):
         self.dish.save()
 
         return super().form_valid(form)
+
+
+class LoginView(View):
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'ok': True})
+        else:
+            return JsonResponse({'ok': False})

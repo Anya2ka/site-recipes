@@ -11,7 +11,19 @@ jQuery(document).ready(function($) {
             confirmButtonText: 'Yes, delete it!',
         }).then(result => {
             if (result.value) {
-                Swal.fire('Deleted!', 'Your dish has been deleted.', 'success');
+                $.ajax({
+                    url: window.location.pathname,
+                    method: 'DELETE',
+                    statusCode: {
+                        404: function() {
+                            Swal.fire('Error!', 'Dish not found', 'error');
+                        },
+                    },
+                }).done(function(data) {
+                    Swal.fire('Deleted!', data.message, 'success').then(() => {
+                        window.location.href = '/';
+                    });
+                });
             }
         });
     });

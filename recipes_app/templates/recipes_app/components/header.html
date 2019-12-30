@@ -9,8 +9,19 @@
             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Поиск</button>
         </form>
     </div>
-    <div>
+    {% if user.is_authenticated %}
+     <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">{{ user.username }}</a>
+          </li>
+        </ul>
         <a class="mr-2" href="{% url 'dish-create' %}" style="font-size: 1.6rem; color: black;"><i class="fas fa-file-signature"></i></a>
-        <a href="#" class="openSigninModel" style="font-size: 1.6rem; color: black;"><i class="fas fa-sign-in-alt"></i></a>
+        <a href="{% url 'logout' %}" style="font-size: 1.6rem; color: black;"><i class="fas fa-sign-out-alt"></i></a>
+      </div>
+    {% else %}
+    <div>
+        <a href="#" class="openSigninModal" style="font-size: 1.6rem; color: black;"><i class="fas fa-sign-in-alt"></i></a>
     </div>
+    {% endif %}
 </nav>

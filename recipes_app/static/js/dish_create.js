@@ -1,6 +1,10 @@
-function initializeForm () {
+function initializeForm() {
     $('select[name="categories"]').select2();
-    new SimpleMDE({ element: $('#id_cooking_method')[0], forceSync: true });
+    var simplemde = new SimpleMDE({
+        element: $('#id_cooking_method')[0],
+        forceSync: true,
+    });
+    simplemde.value();
     new SimpleMDE({ element: $('#id_description')[0], forceSync: true });
 
     $('.ingredients-list input[data-type="TOTAL_FORMS"]').val(
